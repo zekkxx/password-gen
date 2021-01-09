@@ -1,32 +1,11 @@
 const genBtn = document.getElementById("generate"); // document.querySelector("#generate")
 const passOutput = document.getElementById("password");
 
-// console.log("Script is connected!");
+genBtn.addEventListener("click", generatePassword);
 
-genBtn.addEventListener("click", function(){
-    const passwordLength = prompt("How many characters do you want in your password between 8 and 128?");
-    console.log(passwordLength);
-    const lowerChar = confirm("Do you want to include lower case characters?");
-    const lowerCharSet = "qwertyuioplkjhgfdsazxcvbnm"; // "abcdefghijklmnopqrstuvwxyz"
-    const upperChar = confirm("Do you want to include upper case characters?");
-    const upperCharSet = "QWERTYUIOPLKJHGFDSAZXCVBNM";
-    const numChar = confirm("Do you want to include number characters?");
-    const numCharSet = "0123456789";
-    const specialChar = confirm("Do you want to include special characters?");
-    const specialCharSet = "!@#$%";
-    let approvedCharSet="";
-    if(lowerChar){
-        approvedCharSet+=lowerCharSet
-    }
-    if(upperChar){
-        approvedCharSet+=upperCharSet
-    }
-    if(numChar){
-        approvedCharSet+=numCharSet
-    }
-    if(specialChar){
-        approvedCharSet+=specialCharSet
-    }
+function generatePassword() {
+    const passwordLength = passwordLengthGenerator();
+    const approvedCharSet = approvedCharSetGenerator();
     let password="";
     for(let i=0; i<passwordLength; i++){
         let index=Math.floor(Math.random() * approvedCharSet.length);
@@ -34,4 +13,36 @@ genBtn.addEventListener("click", function(){
     }
     console.log(password);
     passOutput.textContent = password;
-})
+}
+
+function passwordLengthGenerator(){
+    var pLength = prompt("How many characters do you want in your password between 8 and 128?");
+    if(pLength < 8 || pLength > 128 || isNaN(pLength)){
+        alert("No. Follow instructions goof!");
+        return passwordLengthGenerator();
+    } else {
+        return pLength;
+    }
+}
+
+function approvedCharSetGenerator(){
+    let approvedCharSet="";
+    if(confirm("Do you want to include lower case characters?")){
+        approvedCharSet+="qwertyuioplkjhgfdsazxcvbnm"; // "abcdefghijklmnopqrstuvwxyz"
+    }
+    if(confirm("Do you want to include upper case characters?")){
+        approvedCharSet+="QWERTYUIOPLKJHGFDSAZXCVBNM";
+    }
+    if(confirm("Do you want to include number characters?")){
+        approvedCharSet+="0123456789";
+    }
+    if(confirm("Do you want to include special characters?")){
+        approvedCharSet+="!@#$%";
+    }
+    if(approvedCharSet.length){
+        return approvedCharSet;
+    } else {
+        alert("No. Follow instructions goof!");
+        return approvedCharSetGenerator();
+    }
+}
